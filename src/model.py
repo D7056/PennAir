@@ -36,8 +36,16 @@ mask= cv2.inRange(mad_display, lower_black, upper_black)
 contours,_=cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
 for cnt in contours:
-    if cv2.contourArea(cnt)>1000:
+    area=cv2.contourArea(cnt)
+    m=cv2.moments(cnt)
+    if area>1000:
+        x=int(m["m10"]/area)
+        y=int(m["m01"]/area)
         cv2.drawContours(img,[cnt], -1, (0,200,0),3)
+        cv2.circle(img, (x, y), 5, (0, 0, 255), -1)
+        cv2.putText(img, text=f"[{x} {y}]", org=(x,y+20), fontFace=cv2.FONT_HERSHEY_SIMPLEX, fontScale=0.5, color=(255,255,255))
+
+
 
 cv2.imshow("Masked", mask)
 cv2.imshow("image", img)
