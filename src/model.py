@@ -1,59 +1,27 @@
-from PIL import Image
+import cv2
+from scipy.ndimage import median_filter
 import numpy as np
-from scipy.optimize import minimize
-import math
 
+img=cv2.imread("imgs/static.png")
 
-img=Image.open("imgs/static.png")
+window_size=9
 
-img_array = np.array(img)
+blurred_img=cv2.medianBlur(img,window_size)
 
-window_size=7
-
-padding_size=window_size//2
-
-pad_width=(
-    (padding_size,padding_size),
-    (padding_size,padding_size),
-    (0,0)
-)
-
-padded_img=np.pad(img_array, pad_width=pad_width, mode="edge")
-
-height, width, channel = img_array.shape
-
-norm_array=np.zeros_like(img_array)
-
-print(padded_img.shape)
-
-for i in range(padding_size,height+3):
-
-    for k in range(padding_size,width+3):
-
-        kernel= padded_img[i-padding_size : i-padding_size + window_size, k-padding_size : k-padding_size+window_size, :] 
-
-       
-
-        kernel=kernel.reshape(-1, channel)
-       
-        
-        norm_array[i-padding_size][k-padding_size]=np.median(kernel, axis=0)
-
-print(norm_array)
-
-img=Image.fromarray(norm_array, "RGB")
-
-img.show()
-
-        
-
-        
+kernel_size=(window_size,window_size, 1)
 
 
 
+median_img=median_filter(blurred_img, kernel_size)
+
+absolute=np.abs(median_img-blurred_img)
+
+mad=median_filter(absolute,kernel_size)
 
 
 
-
-
-
+cv2.imshow("Original Image", img)
+cv2.imshow("Blurred", blurred_img)
+cv2.imshow("MAD", mad)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
