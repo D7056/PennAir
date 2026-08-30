@@ -28,8 +28,25 @@ mad_display = cv2.cvtColor(mad, cv2.COLOR_BGR2GRAY)
 
 mad_display= cv2.normalize(mad_display, None, 0, 255, cv2.NORM_MINMAX)
 
+lower_black=0
+upper_black=15
 
-edges= absolute/(mad+0.3)
+mask= cv2.inRange(mad_display, lower_black, upper_black)
+
+contours,_=cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+
+for cnt in contours:
+    if cv2.contourArea(cnt)>1000:
+        cv2.drawContours(img,[cnt], -1, (0,200,0),3)
+
+cv2.imshow("Masked", mask)
+cv2.imshow("image", img)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+
+
+
+"""edges= absolute/(mad+0.3)
 
 edges=edges.astype(np.float32)
 
@@ -95,5 +112,7 @@ cv2.imshow("connected", connected_display)
 cv2.imshow("closed", closed)
 cv2.drawContours(img, smoothed_contours, -1, (0,0,0), 2)
 cv2.imshow("Drawn Contour", img)
+
+cv2.imshow("Masked", mask)
 cv2.waitKey(0)
-cv2.destroyAllWindows()
+cv2.destroyAllWindows()"""
