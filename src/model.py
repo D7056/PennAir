@@ -5,6 +5,8 @@ from skimage.filters import apply_hysteresis_threshold
 
 img=cv2.imread("imgs/static.png")
 
+
+
 window_size=9
 
 blurred_img=cv2.medianBlur(img,window_size)
