@@ -2,14 +2,26 @@ import cv2
 from scipy.ndimage import median_filter
 import numpy as np
 from skimage.filters import apply_hysteresis_threshold
+import math
+
+
 
 img=cv2.imread("imgs/static.png")
 
 
+height, width, channel= img.shape
+
+centerx=width//2
+centery=height//2
 
 window_size=9
 
+
+
+
 blurred_img=cv2.medianBlur(img,window_size)
+
+
 
 kernel_size=(window_size,window_size, 1)
 
@@ -22,9 +34,6 @@ absolute=cv2.absdiff(img,blurred_img)
 
 mad=median_filter(absolute,kernel_size)
 
-print(mad)
-print(np.max(mad))
-print(np.mean(mad))
 
 mad_display = cv2.cvtColor(mad, cv2.COLOR_BGR2GRAY)
 
@@ -37,17 +46,59 @@ mask= cv2.inRange(mad_display, lower_black, upper_black)
 
 contours,_=cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
+ratio=0
+area_circle=0
+
+later=[]
 for cnt in contours:
     area=cv2.contourArea(cnt)
+    perimeter=cv2.arcLength(cnt, closed=True)
+
+    
+        
+
+
     m=cv2.moments(cnt)
+    
     if area>1000:
+
+        if ratio < 4*math.pi*area/perimeter**2:
+                ratio=4*math.pi*area/perimeter**2
+                area_circle=area
         x=int(m["m10"]/area)
         y=int(m["m01"]/area)
+        print(area)
         cv2.drawContours(img,[cnt], -1, (0,200,0),3)
         cv2.circle(img, (x, y), 5, (0, 0, 255), -1)
-        cv2.putText(img, text=f"[{x} {y}]", org=(x,y+20), fontFace=cv2.FONT_HERSHEY_SIMPLEX, fontScale=0.5, color=(255,255,255))
+        later.append((x,y))
+
+radius=math.sqrt(area_circle/math.pi)
 
 
+     
+
+
+fx=2564.3186869
+
+fy=2569.70273111
+real=10
+
+fav=(fx+fy)/2
+
+z=fav*real/radius
+
+
+print("Z: ",z)
+
+for i in later:
+     
+     x,y=i
+
+     X=(x-centerx)*z/fx
+     Y=(y-centery)*z/fy
+     cv2.putText(img, text=f"[{X:.2f}, {Y:.2f}, {z:.2f}]", org=(x,y+20), fontFace=cv2.FONT_HERSHEY_SIMPLEX, fontScale=0.5, color=(255,255,255))
+
+cv2.circle(img, (centerx,centery), 5, (255,255,255), -1)
 
 cv2.imshow("Masked", mask)
 cv2.imshow("image", img)
