@@ -1,3 +1,21 @@
+# Visual Demo
+
+**Demo-1**
+
+
+
+https://github.com/user-attachments/assets/9fdcc52c-7d9e-46f0-8fad-39680d702c61
+
+
+
+
+
+**Demo-2**
+
+https://github.com/user-attachments/assets/050759fa-e64e-45c0-b771-5c7a99d54bf9
+
+
+
 # Main Algorithm
 
 
@@ -29,21 +47,7 @@ Tracing contours over the mask picks up not just the real shapes but also scatte
 
 **Stage 5** The final stage wrapped the algorithm into a two-node ROS2 system: one node streams video frames out as image messages, and a second node subscribes to that stream, runs the detection pipeline on each incoming frame, and publishes the results as a MarkerArray. 
 
-# Visual Demo
 
-**Demo-1**
-
-
-
-https://github.com/user-attachments/assets/9fdcc52c-7d9e-46f0-8fad-39680d702c61
-
-
-
-
-
-**Demo-2**
-
-https://github.com/user-attachments/assets/050759fa-e64e-45c0-b771-5c7a99d54bf9
 
 
 
