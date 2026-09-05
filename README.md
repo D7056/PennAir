@@ -1,3 +1,6 @@
+# Main Algorithm
+
+
 **Stage 1:** Median blur. The first step separates the shapes from the background by denoising the image with a median filter. A small sliding window moves across every pixel in the image — for each pixel, you look at the window of pixels around it, compute the median value of that neighborhood, and replace the center pixel with that median. Critically, the output stays the same resolution as the input (an 800×800 image stays 800×800); you're not downsampling, you're running this operation once per pixel across the full image. The reason this helps separate shapes from background: the background is noisy and textured (grass), while each shape has a comparatively uniform, solid color. Median-blurring smooths out that background noise heavily, while barely affecting the already-uniform shape regions.
 
 ![Median Blurred Image](results/blurred.png)
