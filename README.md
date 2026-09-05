@@ -97,5 +97,5 @@ Tracing contours over the mask picks up not just the real shapes but also scatte
 
 **Iteration 6 — Broken rings Problem** that outline is only one pixel wide, so any tiny gap splits it into disconnected arcs — and a broken arc reads as zero area, so the real shape gets thrown out by the noise filter. Morphological closing bridged small gaps, but the circle never closed reliably without a kernel big enough to wreck other shapes.
 
-**Iteration 7 — Threshold the interior not the edge** As a solution, I realized that the raw MAD map already shows each shape as one solid low-value blob against noisier background without ratio score. Thresholding that directly gives filled blobs instead of thin outlines, so one bad pixel can't break the whole shape anymore. This cut 10 pipeline steps down to 5, and it performed better.
+**Iteration 7 — Threshold the interior not the edge** As a solution, I realized that the raw MAD map already shows each shape as one solid low-value blob against noisier background without ratio score. Thresholding that directly gives filled blobs instead of thin outlines, so one bad pixel can't break the whole shape anymore. This cut 10 pipeline to 5, and it performed better.
 
