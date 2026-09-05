@@ -17,7 +17,7 @@ https://github.com/user-attachments/assets/050759fa-e64e-45c0-b771-5c7a99d54bf9
 
 # Running It
 
-### Visual demo (no ROS2 required)
+### Running Visual demo (no ROS2 required)
 
 **Needs Python 3 with:**
 
@@ -30,7 +30,7 @@ https://github.com/user-attachments/assets/050759fa-e64e-45c0-b771-5c7a99d54bf9
 This plays `imgs/hard_vid.mp4` frame by frame with detected shapes outlined, centroids marked, and each shape's `[X, Y, Z]` position overlaid. Press `q` to quit the window.
 
 
-### ROS2 (two-node pipeline)
+### Running ROS2 (two-node pipeline)
 
 Requires Linux with ROS2 Jazzy installed and python3-opencv / cv_bridge available. From the repo root:
 
