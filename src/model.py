@@ -6,7 +6,7 @@ import math
 
 
 
-img=cv2.imread("imgs/static.png")
+img=cv2.imread("imgs/noisy.png")
 
 def tracker(img):
     
@@ -20,7 +20,7 @@ def tracker(img):
 
 
 
-
+    # Replacing each pixel by the median of its region
     blurred_img=cv2.medianBlur(img,window_size)
 
 
@@ -30,13 +30,13 @@ def tracker(img):
 
 
 
-
+    #Taking the difference between the median and original image
     absolute=cv2.absdiff(img,blurred_img)
 
-
+    #Taking the median of that image to find the anomality of the pixels in a particular section of the image
     mad=cv2.medianBlur(absolute,window_size)
 
-
+    
     mad_display = cv2.cvtColor(mad, cv2.COLOR_BGR2GRAY)
 
     mad_display= cv2.normalize(mad_display, None, 0, 255, cv2.NORM_MINMAX)
@@ -44,9 +44,27 @@ def tracker(img):
     lower_black=0
     upper_black=15
 
+    #Isolating the dark regions of the image
     mask= cv2.inRange(mad_display, lower_black, upper_black)
 
+    
+
+    
+
+
+
+    
+
+
+    #Drawing a contour around those regions
     contours,_=cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+
+
+
+    
+    
+
+
 
     ratio=0
     area_circle=0
@@ -61,9 +79,11 @@ def tracker(img):
 
 
         m=cv2.moments(cnt)
-        
-        if area>1000:
 
+        #Filtering by size
+
+        if area>1000:
+            #Checking the circularity to find the area of the circle
             if ratio < 4*math.pi*area/perimeter**2:
                     ratio=4*math.pi*area/perimeter**2
                     area_circle=area
@@ -89,10 +109,12 @@ def tracker(img):
 
     fav=(fx+fy)/2
 
+    #caclulating the depth relative to the circles' radius
+
     z=fav*real/radius
 
 
-    print("Z: ",z)
+    
 
     for i in later:
         
@@ -100,17 +122,18 @@ def tracker(img):
 
         X=(x-centerx)*z/fx
         Y=(y-centery)*z/fy
-        cv2.putText(img, text=f"[{X:.2f}, {Y:.2f}, {z:.2f}]", org=(x,y+20), fontFace=cv2.FONT_HERSHEY_SIMPLEX, fontScale=0.5, color=(255,255,255))
+        cv2.putText(img, text=f"[{X:.2f}, {Y:.2f}, {z:.2f}]", org=(x,y+20), 
+                    fontFace=cv2.FONT_HERSHEY_SIMPLEX, fontScale=0.5, color=(255,255,255))
 
     cv2.circle(img, (centerx,centery), 5, (255,255,255), -1)
-
+   
 
     cv2.imshow("image", img)
     
 
 
 
-    """edges= absolute/(mad+0.3)
+"""edges= absolute/(mad+0.3)
 
     edges=edges.astype(np.float32)
 
