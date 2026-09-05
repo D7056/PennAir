@@ -24,6 +24,25 @@ The last piece is filtering out noise: tracing contours over the mask picks up n
 
 ![OUTLINED](results/outlined.png)
 
+# Visual Demo
+
+**Demo-1**
+
+
+
+https://github.com/user-attachments/assets/9fdcc52c-7d9e-46f0-8fad-39680d702c61
+
+
+
+
+
+**Demo-2**
+
+https://github.com/user-attachments/assets/050759fa-e64e-45c0-b771-5c7a99d54bf9
+
+
+
+
 
 
 # Development Iterations
