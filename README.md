@@ -17,7 +17,7 @@ https://github.com/user-attachments/assets/050759fa-e64e-45c0-b771-5c7a99d54bf9
 
 # Running It
 
-### Running Visual demo (no ROS2 required)
+### Running Visual demo
 
 **Needs Python 3 with:**
 
@@ -95,7 +95,7 @@ Tracing contours over the mask picks up not just the real shapes but also scatte
 
 **Iteration 5 — Ratio + hysteresis** Tried scoring each pixel by how far it is from its local median vs. MAD, but thresholding that alone just gave scattered noise — half of any neighborhood is naturally "above normal." Borrowed hysteresis from Canny instead: keep strong hits automatically, keep weak ones only if connected to a strong one. Gave clean, connected outlines.
 
-**Iteration 6 — Broken rings** Problem: that outline is only one pixel wide, so any tiny gap splits it into disconnected arcs — and a broken arc reads as ~zero area, so the real shape gets thrown out by the noise filter. Morphological closing bridged small gaps, but the circle (weakest contrast) never closed reliably without a kernel big enough to wreck other shapes.
+**Iteration 6 — Broken rings Problem** that outline is only one pixel wide, so any tiny gap splits it into disconnected arcs — and a broken arc reads as zero area, so the real shape gets thrown out by the noise filter. Morphological closing bridged small gaps, but the circle never closed reliably without a kernel big enough to wreck other shapes.
 
-**Iteration 7 — Threshold the interior not the edge** Realized the raw MAD map already shows each shape as one solid low-value blob against noisier background — no ratio score needed. Thresholding that directly gives filled blobs instead of thin outlines, so one bad pixel can't break the whole shape anymore. Cut ~10 pipeline steps down to 5, and it was more robust too.
+**Iteration 7 — Threshold the interior not the edge** As a solution, I realized that the raw MAD map already shows each shape as one solid low-value blob against noisier background without ratio score. Thresholding that directly gives filled blobs instead of thin outlines, so one bad pixel can't break the whole shape anymore. This cut 10 pipeline steps down to 5, and it performed better.
 
