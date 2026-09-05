@@ -24,6 +24,9 @@ The last piece is filtering out noise: tracing contours over the mask picks up n
 
 ![OUTLINED](results/outlined.png)
 
+
+**Stage 5** The final stage wrapped the algorithm into a two-node ROS2 system: one node streams video frames out as image messages, and a second node subscribes to that stream, runs the detection pipeline on each incoming frame, and publishes the results as a `MarkerArray`. 
+
 # Visual Demo
 
 **Demo-1**
@@ -65,4 +68,4 @@ https://github.com/user-attachments/assets/050759fa-e64e-45c0-b771-5c7a99d54bf9
 
 **Iteration 9 — 3D localization.** Recovering a 3D position for each shape required first identifying, automatically, which of the detected contours was the circle, since the circle was the only shape whose real-world size (a 10-inch radius) was known ahead of time. This used a circularity metric, `4π·Area / Perimeter²`, which evaluates to exactly 1 for a perfect circle and drops below 1 for any shape with corners, since a fixed area enclosed by a shorter perimeter is only achieved by a circle. Once the circle was identified, depth (Z) followed from the similar-triangles relationship between its known real-world radius and its measured radius in pixels, scaled by the camera's focal length: a circle that appears small in the image is far away, one that appears large is close, and the ratio between real size and apparent size gives distance directly. That single depth value was then reused for every other detected shape in the same frame, on the assumption that all five shapes lie on the same flat, camera-facing plane — meaning only one shape's true size needed to be known in advance to localize all five in 3D.
 
-**Iteration 10 — ROS2 packaging.** The final stage wrapped the algorithm into a two-node ROS2 system: one node streams video frames out as image messages, and a second node subscribes to that stream, runs the detection pipeline on each incoming frame, and publishes the results — outline points and a 3D position per shape — as a `MarkerArray`. The two nodes are connected only by agreeing on a topic name, not by calling each other's code directly, so either one can be replaced or restarted independently without the other needing to know. This was developed inside a Docker container running the official ROS2 Jazzy image rather than a full Ubuntu VM, since a container produced a working ROS2 environment in minutes rather than requiring the overhead of installing and booting an entire separate operating system.
+
