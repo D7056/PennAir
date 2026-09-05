@@ -42,7 +42,7 @@ Requires Linux with ROS2 Jazzy installed and python3-opencv / cv_bridge availabl
 
 `ros2 launch shape_detector_ros2 shape_detector.launch.py`
 
-This starts both nodes: `video_publisher` streams `imgs/hard_vid.mp4` as `sensor_msgs/Image` on `camera/image_raw`, and `shape_detector` subscribes, runs detection, and publishes a `visualization_msgs/MarkerArray` on `shape_detections`. To see the markers, run `rviz2` in another terminal and add a MarkerArray display on `/shape_detections`.
+This starts both nodes: video_publisher streams imgs/hard_vid.mp4 as sensor_msgs/Image on camera/image_raw, and shape_detector subscribes, runs detection, and publishes a visualization_msgs/MarkerArray on shape_detections. To see the markers, run rviz2 in another terminal and add a MarkerArray display on /shape_detections.
 
 Note: `video_publisher_node.py` opens the video at `/workspace/imgs/hard_vid.mp4` — update that path to wherever this repo actually lives on your machine before building.
 
