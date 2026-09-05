@@ -15,6 +15,37 @@ https://github.com/user-attachments/assets/9fdcc52c-7d9e-46f0-8fad-39680d702c61
 https://github.com/user-attachments/assets/050759fa-e64e-45c0-b771-5c7a99d54bf9
 
 
+# Running It
+
+### Visual demo (no ROS2 required)
+
+**Needs Python 3 with:**
+
+`pip install opencv-python numpy scipy scikit-image`
+
+**From the repo root:**
+
+`python3 -m src.video`
+
+This plays `imgs/hard_vid.mp4` frame by frame with detected shapes outlined, centroids marked, and each shape's `[X, Y, Z]` position overlaid. Press `q` to quit the window.
+
+
+### ROS2 (two-node pipeline)
+
+Requires Linux with ROS2 Jazzy installed and python3-opencv / cv_bridge available. From the repo root:
+
+`cd ros2_ws`
+
+`colcon build --symlink-install`
+
+`source install/setup.bash`
+
+`ros2 launch shape_detector_ros2 shape_detector.launch.py`
+
+This starts both nodes: `video_publisher` streams `imgs/hard_vid.mp4` as `sensor_msgs/Image` on `camera/image_raw`, and `shape_detector` subscribes, runs detection, and publishes a `visualization_msgs/MarkerArray` on `shape_detections`. To see the markers, run `rviz2` in another terminal and add a MarkerArray display on `/shape_detections`.
+
+Note: `video_publisher_node.py` opens the video at `/workspace/imgs/hard_vid.mp4` — update that path to wherever this repo actually lives on your machine before building.
+
 
 # Main Algorithm
 
